@@ -1,83 +1,90 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Calculadora de Salário</title>
+  <script>
+    tailwind = window.tailwind || {};
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          boxShadow: {
+            soft: '0 10px 35px -15px rgba(15, 23, 42, 0.35)'
+          }
+        }
+      }
+    };
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="min-h-screen bg-zinc-100 antialiased">
-  <div class="mx-auto max-w-4xl p-6">
-    <header class="mb-6 flex items-center justify-between">
-      <h1 class="text-xl font-semibold tracking-tight">O Calendário</h1>
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-zinc-100 to-indigo-100 text-slate-800 antialiased transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 dark:text-slate-100">
+  <div class="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
+    <header class="mb-6 rounded-2xl border border-white/30 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Planejamento mensal</p>
+          <h1 class="text-2xl font-semibold tracking-tight">O Calendário</h1>
+        </div>
+
+        <button id="themeToggle" type="button" class="group inline-flex items-center gap-3 rounded-full border border-slate-300 bg-white px-2 py-1 text-sm font-medium shadow-sm transition-all hover:scale-[1.02] hover:border-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500" aria-label="Alternar tema" title="Alternar tema">
+          <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-slate-300 p-1 transition-colors duration-300 dark:bg-slate-700">
+            <span id="toggleDot" class="h-5 w-5 rounded-full bg-white shadow transition-transform duration-300 ease-out dark:translate-x-5 dark:bg-indigo-300"></span>
+          </span>
+          <span id="themeLabel" class="text-slate-700 dark:text-slate-200">Tema claro</span>
+        </button>
+      </div>
     </header>
-	
-    <div class="grid gap-6 md:grid-cols-3">
-      <section class="md:col-span-2 space-y-4">
-        <div class="rounded-2xl border border-zinc-200 bg-zinc-200/30 p-5">
-          <div class="mb-2 grid grid-cols-7 text-center text-[0.70rem] font-medium tracking-wide text-zinc-400">
-            <div>DOM</div>
-            <div>SEG</div>
-            <div>TER</div>
-            <div>QUA</div>
-            <div>QUI</div>
-            <div>SEX</div>
-            <div>SÁB</div>
+
+    <div class="grid gap-6 lg:grid-cols-3">
+      <section class="space-y-4 lg:col-span-2">
+        <div class="rounded-2xl border border-white/40 bg-white/70 p-5 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
+          <div class="mb-3 grid grid-cols-7 text-center text-[0.70rem] font-semibold tracking-wide text-slate-500 dark:text-slate-400">
+            <div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div>
           </div>
-          <div id="calendarGrid" class="grid grid-cols-7 gap-1.5"></div>
+          <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 sm:gap-2"></div>
         </div>
-		
-		<section class="md:col-span-2">
-			<div class="relative">
-			  <button id="copyBtn" class="absolute right-2 top-2 z-10 rounded-lg border border-zinc-200 
-				bg-zinc-400/60 p-2 hover:bg-zinc-500/60 focus:outline-none focus:ring-2 focus:ring-zinc-500 disabled:opacity-40 disabled:cursor-not-allowed" title="Copiar resultado" aria-label="Copiar resultado">
-				<svg id="iconCopy" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-				<svg id="iconCheck" xmlns="http://www.w3.org/2000/svg" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 12-12-1.5-1.5z"/></svg>
-			  </button>
-			  <div id="output" class="whitespace-pre-wrap rounded-2xl border border-zinc-200 bg-zinc-200/30 p-4 pr-12 font-mono text-sm min-h-12"></div>
-			</div>
-		</section>
+
+        <section>
+          <div class="relative rounded-2xl border border-white/40 bg-white/70 p-2 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
+            <button id="copyBtn" class="absolute right-4 top-4 z-10 rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700" title="Copiar resultado" aria-label="Copiar resultado">
+              <svg id="iconCopy" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+              <svg id="iconCheck" xmlns="http://www.w3.org/2000/svg" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 12-12-1.5-1.5z"/></svg>
+            </button>
+            <div id="output" class="min-h-16 whitespace-pre-wrap rounded-xl border border-slate-200 bg-white/90 p-4 pr-12 font-mono text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-100"></div>
+          </div>
+        </section>
       </section>
-	  
+
       <section class="space-y-4">
-        <div class="rounded-2xl border border-zinc-200 bg-zinc-200/30 p-4">
-		  <div class="flex items-center gap-2">
-			<button id="prevMonth" class="rounded-full min-w-[2rem] min-h-[2rem] border border-zinc-800 hover:bg-zinc-200 p-0 m-0" 
-				title="Mês anterior" aria-label="Mês anterior">
-				<span class="text-[1rem] p-0 m-0">‹</span>
-				</button>
-			<div id="monthLabel" class="min-w-fit w-full font-semibold text-center text-sm"></div>
-			<button id="nextMonth" class="rounded-full min-w-[2rem] min-h-[2rem] border border-zinc-800 hover:bg-zinc-200 p-0 m-0" 
-				title="Próximo mês" aria-label="Próximo mês">
-				<span class="text-[1rem] p-0 m-0">›</span>
-			</button>
-		  </div>
+        <div class="rounded-2xl border border-white/40 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
+          <div class="flex items-center gap-2">
+            <button id="prevMonth" class="inline-flex min-h-[2.25rem] min-w-[2.25rem] items-center justify-center rounded-full border border-slate-400 bg-white text-lg transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700" title="Mês anterior" aria-label="Mês anterior">‹</button>
+            <div id="monthLabel" class="w-full text-center text-sm font-semibold"></div>
+            <button id="nextMonth" class="inline-flex min-h-[2.25rem] min-w-[2.25rem] items-center justify-center rounded-full border border-slate-400 bg-white text-lg transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700" title="Próximo mês" aria-label="Próximo mês">›</button>
+          </div>
         </div>
-        <div class="rounded-2xl border border-zinc-200 bg-zinc-200/30 p-4">
+
+        <div class="rounded-2xl border border-white/40 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
           <div class="space-y-3">
-            <label for="valorHora" class="block text-[0.70rem] font-medium tracking-wide">VALOR HORA</label>
-            <input id="valorHora" type="number" inputmode="decimal" placeholder="0,00" min="0"
-			class="w-full rounded-xl border border-zinc-400 bg-zinc-100 px-3 py-2 placeholder-zinc-600 outline-none focus:border-zinc-700" />
-            
-			<label for="horas" class="block text-[0.70rem] font-medium tracking-wide">HORAS TRABALHADAS</label>
-            <input id="horas" type="number" inputmode="decimal" placeholder="8" min="0"
-			class="w-full rounded-xl border border-zinc-400 bg-zinc-100 px-3 py-2 placeholder-zinc-600 outline-none focus:border-zinc-700" />
-			
+            <label for="valorHora" class="block text-[0.70rem] font-medium tracking-wide text-slate-600 dark:text-slate-300">VALOR HORA</label>
+            <input id="valorHora" type="number" inputmode="decimal" placeholder="0,00" min="0" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 outline-none transition focus:border-indigo-500 dark:border-slate-600 dark:bg-slate-800 dark:placeholder-slate-500" />
+
+            <label for="horas" class="block text-[0.70rem] font-medium tracking-wide text-slate-600 dark:text-slate-300">HORAS TRABALHADAS</label>
+            <input id="horas" type="number" inputmode="decimal" placeholder="8" min="0" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 outline-none transition focus:border-indigo-500 dark:border-slate-600 dark:bg-slate-800 dark:placeholder-slate-500" />
+
             <div class="flex items-center gap-3 pt-2">
-              <button id="modeWorked" 
-			  class="h-9 w-9 rounded-full bg-emerald-600 ring-0 ring-emerald-400/80 ring-offset-2 ring-offset-zinc-200 transition hover:brightness-110" 
-			  title="Marcar como trabalhado" aria-label="Marcar como trabalhado"></button>
-			  
-              <button id="modeNotWorked" 
-			  class="h-9 w-9 rounded-full bg-red-600 ring-0 ring-red-400/80 ring-offset-2 ring-offset-zinc-200 transition hover:brightness-110" 
-			  title="Marcar como não trabalhado" aria-label="Marcar como não trabalhado"></button>
+              <button id="modeWorked" class="h-10 w-10 rounded-full bg-emerald-600 ring-0 ring-emerald-300 ring-offset-2 ring-offset-white transition hover:brightness-110 dark:ring-offset-slate-900" title="Marcar como trabalhado" aria-label="Marcar como trabalhado"></button>
+              <button id="modeNotWorked" class="h-10 w-10 rounded-full bg-red-600 ring-0 ring-red-300 ring-offset-2 ring-offset-white transition hover:brightness-110 dark:ring-offset-slate-900" title="Marcar como não trabalhado" aria-label="Marcar como não trabalhado"></button>
             </div>
           </div>
         </div>
-		<button id="calcBtn" class="w-full py-2 border-2 border-zinc-950 bg-zinc-950 text-[0.70rem] font-medium tracking-wide text-zinc-200">CALCULAR</button>
-		<hr>
-		<button id="selectAllBtn" class="w-full py-2 border-2 border-zinc-950 text-[0.70rem] font-medium tracking-wide text-zinc-950">MARCAR TODOS OS DIAS ÚTEIS</button>
-		<button id="clearAllBtn" class="w-full py-2 border-2 border-zinc-950 text-[0.70rem] font-medium tracking-wide text-zinc-950">DESMARCAR TUDO</button>
+
+        <button id="calcBtn" class="w-full rounded-xl border border-slate-900 bg-slate-900 py-2 text-[0.70rem] font-semibold tracking-wide text-white transition hover:bg-slate-800 dark:border-indigo-400 dark:bg-indigo-500 dark:hover:bg-indigo-400">CALCULAR</button>
+        <hr class="border-slate-300 dark:border-slate-700">
+        <button id="selectAllBtn" class="w-full rounded-xl border border-slate-800 py-2 text-[0.70rem] font-semibold tracking-wide text-slate-800 transition hover:bg-slate-100 dark:border-slate-500 dark:text-slate-200 dark:hover:bg-slate-800">MARCAR TODOS OS DIAS ÚTEIS</button>
+        <button id="clearAllBtn" class="w-full rounded-xl border border-slate-800 py-2 text-[0.70rem] font-semibold tracking-wide text-slate-800 transition hover:bg-slate-100 dark:border-slate-500 dark:text-slate-200 dark:hover:bg-slate-800">DESMARCAR TUDO</button>
       </section>
     </div>
   </div>
@@ -85,17 +92,20 @@
   <script>
   const monthState = new Map();
 
-  // Cache de feriados por ano (BrasilAPI) e do mês atual
   const holidayYearCache = new Map();
   let currentMonthHolidays = new Map();
-  
+
   let view = (function () {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() };
   })();
-  
+
   let mode = 'worked';
-  
+
+  const htmlEl = document.documentElement;
+  const themeToggle = document.getElementById('themeToggle');
+  const themeLabel = document.getElementById('themeLabel');
+
   const monthLabelEl = document.getElementById('monthLabel');
   const gridEl = document.getElementById('calendarGrid');
   const btnPrev = document.getElementById('prevMonth');
@@ -110,11 +120,34 @@
   const iconCopy = document.getElementById('iconCopy');
   const iconCheck = document.getElementById('iconCheck');
 
-  // Seleção em área (drag)
   let isPointerDown = false;
   let isDraggingSelection = false;
   let dragMode = null;
-  let dragStartCell = null; // { year, month, day, btn }
+  let dragStartCell = null;
+
+  function applyTheme(theme) {
+    const isDark = theme === 'dark';
+    htmlEl.classList.toggle('dark', isDark);
+    localStorage.setItem('theme', theme);
+    if (themeLabel) themeLabel.textContent = isDark ? 'Tema escuro' : 'Tema claro';
+  }
+
+  function initTheme() {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark' || stored === 'light') {
+      applyTheme(stored);
+      return;
+    }
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(prefersDark ? 'dark' : 'light');
+  }
+
+  if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+      const next = htmlEl.classList.contains('dark') ? 'light' : 'dark';
+      applyTheme(next);
+    });
+  }
 
   function updateCopyState() {
     const hasText = !!(outputEl.textContent || '').trim();
@@ -156,8 +189,8 @@
   function getState(y, m) {
     const k = keyFor(y, m);
     if (!monthState.has(k)) {
-      monthState.set(k, { 
-        worked: new Set(), 
+      monthState.set(k, {
+        worked: new Set(),
         notWorked: new Set(),
         extraHours: new Map()
       });
@@ -221,8 +254,6 @@
       .join(' ');
   }
 
-  // --------- Feriados (BrasilAPI) ---------
-
   async function fetchHolidaysForYear(year) {
     if (holidayYearCache.has(year)) {
       const cached = holidayYearCache.get(year);
@@ -254,9 +285,7 @@
       const dateStr = String(h.date);
       if (dateStr.slice(5, 7) === monthStr) {
         const day = parseInt(dateStr.slice(8, 10), 10);
-        if (!Number.isNaN(day)) {
-          map.set(day, h);
-        }
+        if (!Number.isNaN(day)) map.set(day, h);
       }
     }
     return map;
@@ -272,7 +301,7 @@
     const st = getState(y, m);
     const extra = st.extraHours.get(d) || 0;
 
-    btn.className = 'aspect-square select-none rounded-xl text-sm transition flex items-center justify-center hover:bg-zinc-200';
+    btn.className = 'aspect-square select-none rounded-xl text-sm transition flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700';
     btn.style = '';
     btn.textContent = String(d);
 
@@ -283,6 +312,8 @@
       btn.classList.add('bg-emerald-600', 'text-white', 'hover:bg-emerald-700');
     } else if (notWorked) {
       btn.classList.add('bg-red-500', 'text-white', 'hover:bg-red-600');
+    } else {
+      btn.classList.add('bg-white/80', 'text-slate-700', 'dark:bg-slate-800/80', 'dark:text-slate-200');
     }
 
     const titleParts = [];
@@ -290,83 +321,62 @@
     if (monthHolidays && monthHolidays.has(d)) {
       const holiday = monthHolidays.get(d);
       btn.classList.add('text-blue-500', 'font-bold');
-	  btn.style = 'text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,'
-             + '1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff';
+      btn.style = 'text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff';
       btn.classList.remove('text-white');
-      if (holiday && holiday.name) {
-        titleParts.push(formatHolidayName(holiday.name));
-      }
+      if (holiday && holiday.name) titleParts.push(formatHolidayName(holiday.name));
     }
 
     if (extra > 0) {
       const extraStr = String(extra).replace('.', ',');
       titleParts.push(`Dias com horas extras: ${extraStr}h`);
       btn.classList.add('text-purple-500', 'font-bold');
-	  btn.style = 'text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff,'
-             + '1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff';
+      btn.style = 'text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff';
     }
 
-    if (titleParts.length > 0) {
-      btn.title = titleParts.join(' | ');
-    } else {
-      btn.title = '';
-    }
+    btn.title = titleParts.length ? titleParts.join(' | ') : '';
   }
 
-  // Aplica ação em um dia (toggle para clique, set para drag)
   function applyDayAction(y, m, d, modeToApply, options) {
     const st = getState(y, m);
     const toggle = options && options.toggle;
 
     if (modeToApply === 'worked') {
       if (toggle) {
-        if (st.worked.has(d)) {
-          st.worked.delete(d);
-        } else {
+        if (st.worked.has(d)) st.worked.delete(d);
+        else {
           st.worked.add(d);
           st.notWorked.delete(d);
         }
-      } else {
-        if (!st.worked.has(d)) {
-          st.worked.add(d);
-          st.notWorked.delete(d);
-        }
+      } else if (!st.worked.has(d)) {
+        st.worked.add(d);
+        st.notWorked.delete(d);
       }
-    } else { // 'notWorked'
-      if (toggle) {
-        if (st.notWorked.has(d)) {
-          st.notWorked.delete(d);
-        } else {
-          st.notWorked.add(d);
-          st.worked.delete(d);
-        }
-      } else {
-        if (!st.notWorked.has(d)) {
-          st.notWorked.add(d);
-          st.worked.delete(d);
-        }
+    } else if (toggle) {
+      if (st.notWorked.has(d)) st.notWorked.delete(d);
+      else {
+        st.notWorked.add(d);
+        st.worked.delete(d);
       }
+    } else if (!st.notWorked.has(d)) {
+      st.notWorked.add(d);
+      st.worked.delete(d);
     }
   }
 
-  // Editar horas extras de um dia (botão direito)
   function editExtraHoursForDay(year, month, day, btn) {
     const st = getState(year, month);
     const current = st.extraHours.get(day) || 0;
     const currentStr = current ? String(current).replace('.', ',') : '';
     const input = prompt(
-      `Horas extras para o dia ${day} (use vírgula ou ponto).\n` +
-      'Deixe em branco ou 0 para remover.',
+      `Horas extras para o dia ${day} (use vírgula ou ponto).\nDeixe em branco ou 0 para remover.`,
       currentStr
     );
-    if (input === null) return; // cancelado
+    if (input === null) return;
 
     const val = parseBRNumber(input);
-    if (!Number.isFinite(val) || val <= 0) {
-      st.extraHours.delete(day);
-    } else {
+    if (!Number.isFinite(val) || val <= 0) st.extraHours.delete(day);
+    else {
       st.extraHours.set(day, val);
-      // Se marcou hora extra, faz sentido garantir que o dia é trabalhado
       applyDayAction(year, month, day, 'worked', { toggle: false });
     }
     updateDayVisual(btn, year, month, day, currentMonthHolidays);
@@ -391,10 +401,7 @@
       monthHolidays = new Map();
     }
 
-    // Se o usuário mudou de mês enquanto buscávamos os feriados, aborta este render
-    if (year !== view.year || month !== view.month) {
-      return;
-    }
+    if (year !== view.year || month !== view.month) return;
 
     currentMonthHolidays = monthHolidays;
 
@@ -410,9 +417,7 @@
       btn.setAttribute('data-day', String(d));
       updateDayVisual(btn, year, month, d, monthHolidays);
 
-      // Clique simples (toggle)
-      btn.addEventListener('click', (ev) => {
-        // Se houve arraste, o clique final é ignorado
+      btn.addEventListener('click', () => {
         if (isDraggingSelection) {
           isDraggingSelection = false;
           return;
@@ -421,20 +426,17 @@
         updateDayVisual(btn, year, month, d, currentMonthHolidays);
       });
 
-      // Início do possível arraste
       btn.addEventListener('mousedown', (ev) => {
-        ev.preventDefault(); // evita seleção de texto
+        ev.preventDefault();
         isPointerDown = true;
         isDraggingSelection = false;
-        dragMode = mode; // trava o modo no início do arraste
+        dragMode = mode;
         dragStartCell = { year, month, day: d, btn };
       });
 
-      // Passando por cima com o botão pressionado (arraste)
       btn.addEventListener('mouseenter', () => {
         if (!isPointerDown || !dragMode) return;
 
-        // Primeira vez que detectamos arraste: incluímos também o dia inicial
         if (!isDraggingSelection) {
           isDraggingSelection = true;
           if (dragStartCell) {
@@ -445,12 +447,10 @@
           }
         }
 
-        // Dia atual sob o mouse
         applyDayAction(year, month, d, dragMode, { toggle: false });
         updateDayVisual(btn, year, month, d, currentMonthHolidays);
       });
 
-      // Botão direito: editar horas extras
       btn.addEventListener('contextmenu', (ev) => {
         ev.preventDefault();
         editExtraHoursForDay(year, month, d, btn);
@@ -460,14 +460,10 @@
     }
   }
 
-  // Quando soltar o botão do mouse, paramos o arraste,
-  // mas mantemos isDraggingSelection até o clique final,
-  // para que o click não faça toggle.
   window.addEventListener('mouseup', () => {
     isPointerDown = false;
     dragMode = null;
     dragStartCell = null;
-    // isDraggingSelection será limpo no clique final, se existir.
   });
 
   function calculate() {
@@ -497,8 +493,7 @@
       if (extraH > 0) {
         extraHoursTotal += extraH;
         extraTotalCents += Math.round(v * extraH * 100);
-        const extraStr = String(extraH).replace('.', ',');
-        overtimeDescriptions.push(`${day} (+${extraStr}h)`);
+        overtimeDescriptions.push(`${day} (+${String(extraH).replace('.', ',')}h)`);
       }
     }
 
@@ -533,16 +528,13 @@
 
     result += '\n\nResumo:\n';
     result += `${perDayText} x ${workedDays.length}d = ${baseTotalText}`;
-    if (extraTotalCents > 0) {
-      result += `\n${vText} x ${formatHours(extraHoursTotal)} (extras) = ${extraTotalText}`;
-    }
+    if (extraTotalCents > 0) result += `\n${vText} x ${formatHours(extraHoursTotal)} (extras) = ${extraTotalText}`;
     result += `\nTotal: ${totalText}`;
 
     outputEl.textContent = result;
     updateCopyState();
   }
 
-  // --- MARCAR TODOS OS DIAS ÚTEIS (seg–sex), respeitando feriados e modo atual ---
   if (btnSelectAll) {
     btnSelectAll.addEventListener('click', () => {
       const year = view.year;
@@ -555,12 +547,9 @@
         if (Number.isNaN(d)) return;
 
         const date = new Date(year, month, d);
-        const dayOfWeek = date.getDay(); // 0 = dom, 6 = sáb
+        const dayOfWeek = date.getDay();
 
-        // só dias úteis
         if (dayOfWeek === 0 || dayOfWeek === 6) return;
-
-        // não marcar feriados
         if (monthHolidays.has(d)) return;
 
         applyDayAction(year, month, d, mode, { toggle: false });
@@ -569,7 +558,6 @@
     });
   }
 
-  // --- DESMARCAR TUDO DO MÊS ATUAL ---
   if (btnClearAll) {
     btnClearAll.addEventListener('click', () => {
       const year = view.year;
@@ -615,10 +603,11 @@
   btnNotWorked.addEventListener('click', () => setMode('notWorked'));
   if (btnCopy) btnCopy.addEventListener('click', copyOutput);
 
+  initTheme();
   setMode('worked');
   renderCalendar();
   updateCopyState();
-</script>
+  </script>
 
 </body>
 </html>
