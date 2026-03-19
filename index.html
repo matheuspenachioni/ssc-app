@@ -18,72 +18,72 @@
     };
   </script>
 </head>
-<body class="min-h-screen bg-gradient-to-br from-slate-100 via-zinc-100 to-indigo-100 text-slate-800 antialiased transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 dark:text-slate-100">
+<body class="min-h-screen bg-gradient-to-br from-slate-100 via-zinc-100 to-indigo-100 text-slate-800 antialiased transition-colors duration-300 dark:from-zinc-900 dark:via-zinc-950 dark:to-black dark:text-zinc-100">
   <div class="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
-    <header class="mb-6 rounded-2xl border border-white/30 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
+    <header class="mb-6 rounded-2xl border border-white/30 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/80">
       <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <p class="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Planejamento mensal</p>
+          <p class="text-xs font-medium uppercase tracking-[0.2em] text-slate-500 dark:text-zinc-400">Planejamento mensal</p>
           <h1 class="text-2xl font-semibold tracking-tight">O Calendário</h1>
         </div>
 
-        <button id="themeToggle" type="button" class="group inline-flex items-center gap-3 rounded-full border border-slate-300 bg-white px-2 py-1 text-sm font-medium shadow-sm transition-all hover:scale-[1.02] hover:border-slate-400 dark:border-slate-600 dark:bg-slate-800 dark:hover:border-slate-500" aria-label="Alternar tema" title="Alternar tema">
-          <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-slate-300 p-1 transition-colors duration-300 dark:bg-slate-700">
-            <span id="toggleDot" class="h-5 w-5 rounded-full bg-white shadow transition-transform duration-300 ease-out dark:translate-x-5 dark:bg-indigo-300"></span>
+        <button id="themeToggle" type="button" class="group inline-flex items-center gap-3 rounded-full border border-slate-300 bg-white px-2 py-1 text-sm font-medium shadow-sm transition-all hover:scale-[1.02] hover:border-slate-400 dark:border-zinc-600 dark:bg-zinc-800 dark:hover:border-zinc-500" aria-label="Alternar tema" title="Alternar tema">
+          <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-slate-300 p-1 transition-colors duration-300 dark:bg-zinc-700">
+            <span id="toggleDot" class="h-5 w-5 rounded-full bg-white shadow transition-transform duration-300 ease-out dark:translate-x-5 dark:bg-zinc-200"></span>
           </span>
-          <span id="themeLabel" class="text-slate-700 dark:text-slate-200">Tema claro</span>
+          <span id="themeLabel" class="text-slate-700 dark:text-zinc-200">Tema claro</span>
         </button>
       </div>
     </header>
 
     <div class="grid gap-6 lg:grid-cols-3">
       <section class="space-y-4 lg:col-span-2">
-        <div class="rounded-2xl border border-white/40 bg-white/70 p-5 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
-          <div class="mb-3 grid grid-cols-7 text-center text-[0.70rem] font-semibold tracking-wide text-slate-500 dark:text-slate-400">
+        <div class="rounded-2xl border border-white/40 bg-white/70 p-5 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/75">
+          <div class="mb-3 grid grid-cols-7 text-center text-[0.70rem] font-semibold tracking-wide text-slate-500 dark:text-zinc-400">
             <div>DOM</div><div>SEG</div><div>TER</div><div>QUA</div><div>QUI</div><div>SEX</div><div>SÁB</div>
           </div>
           <div id="calendarGrid" class="grid grid-cols-7 gap-1.5 sm:gap-2"></div>
         </div>
 
         <section>
-          <div class="relative rounded-2xl border border-white/40 bg-white/70 p-2 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
-            <button id="copyBtn" class="absolute right-4 top-4 z-10 rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700" title="Copiar resultado" aria-label="Copiar resultado">
+          <div class="relative rounded-2xl border border-white/40 bg-white/70 p-2 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/75">
+            <button id="copyBtn" class="absolute right-4 top-4 z-10 rounded-lg border border-slate-300 bg-white p-2 text-slate-700 transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-zinc-500 disabled:cursor-not-allowed disabled:opacity-40 dark:border-zinc-600 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700" title="Copiar resultado" aria-label="Copiar resultado">
               <svg id="iconCopy" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M16 1H4c-1.1 0-2 .9-2 2v12h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
               <svg id="iconCheck" xmlns="http://www.w3.org/2000/svg" class="hidden h-4 w-4" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.2l-3.5-3.5L4 14.2l5 5 12-12-1.5-1.5z"/></svg>
             </button>
-            <div id="output" class="min-h-16 whitespace-pre-wrap rounded-xl border border-slate-200 bg-white/90 p-4 pr-12 font-mono text-sm text-slate-700 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-100"></div>
+            <div id="output" class="min-h-16 whitespace-pre-wrap rounded-xl border border-slate-200 bg-white/90 p-4 pr-12 font-mono text-sm text-slate-700 dark:border-zinc-700 dark:bg-zinc-800/90 dark:text-zinc-100"></div>
           </div>
         </section>
       </section>
 
       <section class="space-y-4">
-        <div class="rounded-2xl border border-white/40 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
+        <div class="rounded-2xl border border-white/40 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/75">
           <div class="flex items-center gap-2">
-            <button id="prevMonth" class="inline-flex min-h-[2.25rem] min-w-[2.25rem] items-center justify-center rounded-full border border-slate-400 bg-white text-lg transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700" title="Mês anterior" aria-label="Mês anterior">‹</button>
+            <button id="prevMonth" class="inline-flex min-h-[2.25rem] min-w-[2.25rem] items-center justify-center rounded-full border border-slate-400 bg-white text-lg transition hover:bg-slate-100 dark:border-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700" title="Mês anterior" aria-label="Mês anterior">‹</button>
             <div id="monthLabel" class="w-full text-center text-sm font-semibold"></div>
-            <button id="nextMonth" class="inline-flex min-h-[2.25rem] min-w-[2.25rem] items-center justify-center rounded-full border border-slate-400 bg-white text-lg transition hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:hover:bg-slate-700" title="Próximo mês" aria-label="Próximo mês">›</button>
+            <button id="nextMonth" class="inline-flex min-h-[2.25rem] min-w-[2.25rem] items-center justify-center rounded-full border border-slate-400 bg-white text-lg transition hover:bg-slate-100 dark:border-zinc-600 dark:bg-zinc-800 dark:hover:bg-zinc-700" title="Próximo mês" aria-label="Próximo mês">›</button>
           </div>
         </div>
 
-        <div class="rounded-2xl border border-white/40 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/70">
+        <div class="rounded-2xl border border-white/40 bg-white/70 p-4 shadow-soft backdrop-blur-xl dark:border-white/10 dark:bg-zinc-900/75">
           <div class="space-y-3">
-            <label for="valorHora" class="block text-[0.70rem] font-medium tracking-wide text-slate-600 dark:text-slate-300">VALOR HORA</label>
-            <input id="valorHora" type="number" inputmode="decimal" placeholder="0,00" min="0" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 outline-none transition focus:border-indigo-500 dark:border-slate-600 dark:bg-slate-800 dark:placeholder-slate-500" />
+            <label for="valorHora" class="block text-[0.70rem] font-medium tracking-wide text-slate-600 dark:text-zinc-300">VALOR HORA</label>
+            <input id="valorHora" type="number" inputmode="decimal" placeholder="0,00" min="0" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 outline-none transition focus:border-zinc-500 dark:border-zinc-600 dark:bg-zinc-800 dark:placeholder-zinc-500" />
 
-            <label for="horas" class="block text-[0.70rem] font-medium tracking-wide text-slate-600 dark:text-slate-300">HORAS TRABALHADAS</label>
-            <input id="horas" type="number" inputmode="decimal" placeholder="8" min="0" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 outline-none transition focus:border-indigo-500 dark:border-slate-600 dark:bg-slate-800 dark:placeholder-slate-500" />
+            <label for="horas" class="block text-[0.70rem] font-medium tracking-wide text-slate-600 dark:text-zinc-300">HORAS TRABALHADAS</label>
+            <input id="horas" type="number" inputmode="decimal" placeholder="8" min="0" class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 placeholder-slate-400 outline-none transition focus:border-zinc-500 dark:border-zinc-600 dark:bg-zinc-800 dark:placeholder-zinc-500" />
 
             <div class="flex items-center gap-3 pt-2">
-              <button id="modeWorked" class="h-10 w-10 rounded-full bg-emerald-600 ring-0 ring-emerald-300 ring-offset-2 ring-offset-white transition hover:brightness-110 dark:ring-offset-slate-900" title="Marcar como trabalhado" aria-label="Marcar como trabalhado"></button>
-              <button id="modeNotWorked" class="h-10 w-10 rounded-full bg-red-600 ring-0 ring-red-300 ring-offset-2 ring-offset-white transition hover:brightness-110 dark:ring-offset-slate-900" title="Marcar como não trabalhado" aria-label="Marcar como não trabalhado"></button>
+              <button id="modeWorked" class="h-10 w-10 rounded-full bg-emerald-600 ring-0 ring-emerald-300 ring-offset-2 ring-offset-white transition hover:brightness-110 dark:ring-offset-zinc-900" title="Marcar como trabalhado" aria-label="Marcar como trabalhado"></button>
+              <button id="modeNotWorked" class="h-10 w-10 rounded-full bg-red-600 ring-0 ring-red-300 ring-offset-2 ring-offset-white transition hover:brightness-110 dark:ring-offset-zinc-900" title="Marcar como não trabalhado" aria-label="Marcar como não trabalhado"></button>
             </div>
           </div>
         </div>
 
-        <button id="calcBtn" class="w-full rounded-xl border border-slate-900 bg-slate-900 py-2 text-[0.70rem] font-semibold tracking-wide text-white transition hover:bg-slate-800 dark:border-indigo-400 dark:bg-indigo-500 dark:hover:bg-indigo-400">CALCULAR</button>
-        <hr class="border-slate-300 dark:border-slate-700">
-        <button id="selectAllBtn" class="w-full rounded-xl border border-slate-800 py-2 text-[0.70rem] font-semibold tracking-wide text-slate-800 transition hover:bg-slate-100 dark:border-slate-500 dark:text-slate-200 dark:hover:bg-slate-800">MARCAR TODOS OS DIAS ÚTEIS</button>
-        <button id="clearAllBtn" class="w-full rounded-xl border border-slate-800 py-2 text-[0.70rem] font-semibold tracking-wide text-slate-800 transition hover:bg-slate-100 dark:border-slate-500 dark:text-slate-200 dark:hover:bg-slate-800">DESMARCAR TUDO</button>
+        <button id="calcBtn" class="w-full rounded-xl border border-slate-900 bg-slate-900 py-2 text-[0.70rem] font-semibold tracking-wide text-white transition hover:bg-slate-800 dark:border-zinc-600 dark:bg-zinc-700 dark:hover:bg-zinc-600">CALCULAR</button>
+        <hr class="border-slate-300 dark:border-zinc-700">
+        <button id="selectAllBtn" class="w-full rounded-xl border border-slate-800 py-2 text-[0.70rem] font-semibold tracking-wide text-slate-800 transition hover:bg-slate-100 dark:border-zinc-500 dark:text-zinc-200 dark:hover:bg-zinc-800">MARCAR TODOS OS DIAS ÚTEIS</button>
+        <button id="clearAllBtn" class="w-full rounded-xl border border-slate-800 py-2 text-[0.70rem] font-semibold tracking-wide text-slate-800 transition hover:bg-slate-100 dark:border-zinc-500 dark:text-zinc-200 dark:hover:bg-zinc-800">DESMARCAR TUDO</button>
       </section>
     </div>
   </div>
@@ -300,7 +300,7 @@
     const st = getState(y, m);
     const extra = st.extraHours.get(d) || 0;
 
-    btn.className = 'aspect-square select-none rounded-xl text-sm transition flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700';
+    btn.className = 'aspect-square select-none rounded-xl text-sm transition flex items-center justify-center hover:bg-slate-200 dark:hover:bg-zinc-700';
     btn.style = '';
     btn.textContent = String(d);
 
@@ -312,7 +312,7 @@
     } else if (notWorked) {
       btn.classList.add('bg-red-500', 'text-white', 'hover:bg-red-600');
     } else {
-      btn.classList.add('bg-white/80', 'text-slate-700', 'dark:bg-slate-800/80', 'dark:text-slate-200');
+      btn.classList.add('bg-white/80', 'text-slate-700', 'dark:bg-zinc-800/80', 'dark:text-zinc-200');
     }
 
     const titleParts = [];
