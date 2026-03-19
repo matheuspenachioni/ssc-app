@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Calculadora de Salário</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind = window.tailwind || {};
     tailwind.config = {
       darkMode: 'class',
       theme: {
@@ -17,7 +17,6 @@
       }
     };
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-100 via-zinc-100 to-indigo-100 text-slate-800 antialiased transition-colors duration-300 dark:from-slate-950 dark:via-slate-900 dark:to-indigo-950 dark:text-slate-100">
   <div class="mx-auto max-w-6xl p-4 sm:p-6 lg:p-8">
@@ -321,7 +320,7 @@
     if (monthHolidays && monthHolidays.has(d)) {
       const holiday = monthHolidays.get(d);
       btn.classList.add('text-blue-500', 'font-bold');
-      btn.style = 'text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff';
+      btn.style = 'color:#2563eb; text-shadow: 2px 0 #fff, -2px 0 #fff, 0 2px #fff, 0 -2px #fff, 1px 1px #fff, -1px -1px #fff, 1px -1px #fff, -1px 1px #fff';
       btn.classList.remove('text-white');
       if (holiday && holiday.name) titleParts.push(formatHolidayName(holiday.name));
     }
