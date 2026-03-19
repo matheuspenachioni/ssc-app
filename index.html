@@ -114,6 +114,8 @@
   const btnNotWorked = document.getElementById('modeNotWorked');
   const btnSelectAll = document.getElementById('selectAllBtn');
   const btnClearAll = document.getElementById('clearAllBtn');
+  const valorHoraInput = document.getElementById('valorHora');
+  const horasInput = document.getElementById('horas');
   const outputEl = document.getElementById('output');
   const btnCopy = document.getElementById('copyBtn');
   const iconCopy = document.getElementById('iconCopy');
@@ -146,6 +148,28 @@
       const next = htmlEl.classList.contains('dark') ? 'light' : 'dark';
       applyTheme(next);
     });
+  }
+
+  function loadSavedInputs() {
+    const savedValorHora = localStorage.getItem('valorHora');
+    const savedHoras = localStorage.getItem('horasTrabalhadas');
+
+    if (valorHoraInput && savedValorHora !== null) {
+      valorHoraInput.value = savedValorHora;
+    }
+
+    if (horasInput) {
+      if (savedHoras !== null) {
+        horasInput.value = savedHoras;
+      } else {
+        horasInput.value = '8';
+      }
+    }
+  }
+
+  function saveInputs() {
+    if (valorHoraInput) localStorage.setItem('valorHora', valorHoraInput.value ?? '');
+    if (horasInput) localStorage.setItem('horasTrabalhadas', horasInput.value ?? '');
   }
 
   function updateCopyState() {
@@ -466,14 +490,16 @@
   });
 
   function calculate() {
-    const v = parseBRNumber(document.getElementById('valorHora').value);
-    const h = parseBRNumber(document.getElementById('horas').value);
+    const v = parseBRNumber(valorHoraInput.value);
+    const h = parseBRNumber(horasInput.value);
 
     if (!Number.isFinite(v) || !Number.isFinite(h)) {
       outputEl.textContent = 'Preencha Valor Hora e Horas trabalhadas corretamente.';
       updateCopyState();
       return;
     }
+
+    saveInputs();
 
     const st = getState(view.year, view.month);
     const workedDays = Array.from(st.worked).sort((a, b) => a - b);
@@ -603,6 +629,7 @@
   if (btnCopy) btnCopy.addEventListener('click', copyOutput);
 
   initTheme();
+  loadSavedInputs();
   setMode('worked');
   renderCalendar();
   updateCopyState();
