@@ -130,6 +130,8 @@
   const btnClearAll = document.getElementById('clearAllBtn');
   const valorHoraInput = document.getElementById('valorHora');
   const horasInput = document.getElementById('horas');
+  const pixKeyTypeInput = document.getElementById('pixKeyType');
+  const pixKeyInput = document.getElementById('pixKey');
   const outputEl = document.getElementById('output');
   const btnCopy = document.getElementById('copyBtn');
   const iconCopy = document.getElementById('iconCopy');
@@ -546,7 +548,7 @@
     const totalText = formatBRL(totalCents / 100);
 
     let result = '';
-    result += 'Valor Hora x Horas trabalhadas (por dia)\n';
+    result += 'Valor Hora x Horas trabalhadas\n';
     result += `${vText} x ${hText} = ${perDayText}\n\n`;
 
     result += 'Dias trabalhados:\n';
@@ -569,6 +571,20 @@
     result += `${perDayText} x ${workedDays.length}d = ${baseTotalText}`;
     if (extraTotalCents > 0) result += `\n${vText} x ${formatHours(extraHoursTotal)} (extras) = ${extraTotalText}`;
     result += `\nTotal: ${totalText}`;
+
+    const pixKey = (pixKeyInput && pixKeyInput.value ? pixKeyInput.value : '').trim();
+    const pixTypeRaw = pixKeyTypeInput && pixKeyTypeInput.value ? pixKeyTypeInput.value : '';
+    const pixTypeMap = {
+      telefone: 'Telefone',
+      cpf: 'CPF',
+      cnpj: 'CNPJ',
+      email: 'E-mail'
+    };
+    const pixType = pixTypeMap[pixTypeRaw] || pixTypeRaw;
+
+    if (pixKey) {
+      result += `\n\nChave PIX:\n(${pixType}) ${pixKey}`;
+    }
 
     outputEl.textContent = result;
     updateCopyState();
