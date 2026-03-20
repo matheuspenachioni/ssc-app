@@ -304,7 +304,7 @@
     const st = getState(y, m);
     const extra = st.extraHours.get(d) || 0;
 
-    btn.className = 'aspect-square select-none rounded-xl text-sm transition flex items-center justify-center hover:bg-slate-200
+    btn.className = 'aspect-square select-none rounded-xl text-sm transition flex items-center justify-center hover:bg-slate-200';
     btn.style = '';
     btn.textContent = String(d);
 
@@ -316,7 +316,7 @@
     } else if (notWorked) {
       btn.classList.add('bg-red-500', 'text-white', 'hover:bg-red-600');
     } else {
-      btn.classList.add('bg-white/80', 'text-slate-700', 'dark:bg-zinc-800/80', 'dark:text-zinc-200');
+      btn.classList.add('bg-white/80', 'text-slate-700');
     }
 
     const titleParts = [];
