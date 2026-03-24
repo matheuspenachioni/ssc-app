@@ -57,6 +57,8 @@
         <button id="copyTotalBtn"
           class="rounded border border-[2.5px] border-black bg-yellow-500 px-3 py-1 text-black transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-zinc-500 disabled:cursor-not-allowed disabled:opacity-40"
           type="button" disabled>
+          <i id="iconCopy" class="fa-regular fa-copy"></i>
+          <i id="iconCheck" class="fa-solid fa-check hidden"></i>
           Copiar total
         </button>
       </div>
@@ -77,6 +79,8 @@
     const resultListEl = document.getElementById('resultList');
     const totalEl = document.getElementById('total');
     const copyTotalBtn = document.getElementById('copyTotalBtn');
+    const iconCopy = document.getElementById('iconCopy');
+    const iconCheck = document.getElementById('iconCheck');
 
     const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
     let totalAmount = 0;
@@ -132,8 +136,21 @@
     async function copyTotalValue() {
       if (!Number.isFinite(totalAmount) || totalAmount <= 0) return;
       const formatted = formatBRL(totalAmount);
+
+      const onDone = () => {
+        if (iconCopy && iconCheck) {
+          iconCopy.classList.add('hidden');
+          iconCheck.classList.remove('hidden');
+          setTimeout(() => {
+            iconCheck.classList.add('hidden');
+            iconCopy.classList.remove('hidden');
+          }, 1200);
+        }
+      };
+
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(formatted);
+        onDone();
         return;
       }
       const ta = document.createElement('textarea');
@@ -144,6 +161,7 @@
       ta.select();
       document.execCommand('copy');
       document.body.removeChild(ta);
+      onDone();
     }
 
     async function processFiles() {
