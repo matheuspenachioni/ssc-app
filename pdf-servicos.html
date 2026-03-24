@@ -54,6 +54,11 @@
         <h2 class="text-xl">Resultados</h2>
         <ul id="resultList" class="list-disc pl-5 space-y-1"></ul>
         <p id="total" class="text-2xl"></p>
+        <button id="copyTotalBtn"
+          class="rounded border border-[2.5px] border-black bg-yellow-500 px-3 py-1 text-black transition hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-zinc-500 disabled:cursor-not-allowed disabled:opacity-40"
+          type="button" disabled>
+          Copiar total
+        </button>
       </div>
     </section>
   </div>
@@ -71,8 +76,10 @@
     const statusEl = document.getElementById('status');
     const resultListEl = document.getElementById('resultList');
     const totalEl = document.getElementById('total');
+    const copyTotalBtn = document.getElementById('copyTotalBtn');
 
     const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+    let totalAmount = 0;
 
     function formatBRL(value) {
       return brl.format(value).replace(/\s/g, '');
@@ -110,7 +117,6 @@
       if (!Number.isFinite(value)) return null;
 
       return {
-        raw: match[1],
         value
       };
     }
@@ -119,6 +125,25 @@
       resultListEl.innerHTML = '';
       totalEl.textContent = '';
       statusEl.textContent = 'Aguardando arquivos.';
+      totalAmount = 0;
+      copyTotalBtn.disabled = true;
+    }
+
+    async function copyTotalValue() {
+      if (!Number.isFinite(totalAmount) || totalAmount <= 0) return;
+      const formatted = formatBRL(totalAmount);
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(formatted);
+        return;
+      }
+      const ta = document.createElement('textarea');
+      ta.value = formatted;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
     }
 
     async function processFiles() {
@@ -153,7 +178,16 @@
           } else {
             total += extracted.value;
             foundCount += 1;
-            listItem.textContent = `${file.name}: ${formatBRL(extracted.value)} (extraído de R$ ${extracted.raw}).`;
+            const fileNameEl = document.createElement('small');
+            fileNameEl.textContent = `${file.name}:`;
+
+            const valueEl = document.createElement('span');
+            valueEl.textContent = `${formatBRL(extracted.value)} (valor do serviço)`;
+            valueEl.style.color = '#007bff';
+
+            listItem.appendChild(fileNameEl);
+            listItem.appendChild(document.createElement('br'));
+            listItem.appendChild(valueEl);
           }
         } catch (error) {
           listItem.textContent = `${file.name}: erro ao processar o PDF.`;
@@ -163,12 +197,15 @@
         resultListEl.appendChild(listItem);
       }
 
-      totalEl.textContent = `Total encontrado: ${formatBRL(total)}`;
+      totalAmount = total;
+      copyTotalBtn.disabled = total <= 0;
+      totalEl.textContent = `Total encontrado: ${formatBRL(totalAmount)}`;
       statusEl.textContent =
         `Concluído. ${foundCount} de ${files.length} arquivo(s) com "Valor do Serviço" localizado.`;
     }
 
     processBtn.addEventListener('click', processFiles);
+    copyTotalBtn.addEventListener('click', copyTotalValue);
     clearBtn.addEventListener('click', () => {
       inputEl.value = '';
       resetResults();
