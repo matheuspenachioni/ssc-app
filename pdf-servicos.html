@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR" class="scroll-smooth">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Somar Valor do Serviço (PDF)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          boxShadow: {
+            soft: '0 10px 35px -15px rgba(15, 23, 42, 0.35)'
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body
+  class="min-h-screen bg-gradient-to-br from-slate-100 via-zinc-100 to-indigo-100 text-slate-800 antialiased transition-colors duration-300">
+  <div class="mx-auto max-w-4xl p-4 sm:p-6 lg:p-8 space-y-6">
+    <header class="space-y-4">
+      <a href="index.html"
+        class="inline-flex items-center gap-2 rounded border border-[2.5px] border-black bg-yellow-500 px-3 py-2 text-black transition hover:bg-slate-100">
+        <i class="fa-solid fa-arrow-left"></i>
+        Voltar para calculadora
+      </a>
+      <div>
+        <h1 class="text-4xl font-semibold tracking-[0.05em]">Somador de Valor do Serviço</h1>
+        <p class="text-lg text-slate-600">Envie arquivos PDF para extrair "Valor do Serviço" e calcular o total.</p>
+      </div>
+    </header>
+
+    <section class="bg-white/70 rounded border border-[2.5px] border-black p-4 shadow-cstm space-y-4">
+      <label for="pdfInput" class="block text-[1rem] font-medium tracking-wide text-slate-700">ARQUIVOS PDF</label>
+      <input id="pdfInput" type="file" accept=".pdf,application/pdf" multiple
+        class="w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-slate-700 outline-none transition focus:border-zinc-500" />
+
+      <div class="flex flex-wrap gap-3">
+        <button id="processBtn" class="box-cstm box-border-cstm bg-black text-white">PROCESSAR ARQUIVOS</button>
+        <button id="clearBtn" class="box-cstm box-border-cstm bg-yellow-500 text-black">LIMPAR</button>
+      </div>
+
+      <div id="status" class="rounded border border-[2.5px] border-black p-3 bg-white/80 text-sm">Aguardando arquivos.</div>
+
+      <div id="results" class="rounded border border-[2.5px] border-black p-4 bg-white/80 space-y-2">
+        <h2 class="text-xl">Resultados</h2>
+        <ul id="resultList" class="list-disc pl-5 space-y-1"></ul>
+        <p id="total" class="text-2xl"></p>
+      </div>
+    </section>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
+  <script type="module">
+    import * as pdfjsLib from 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs';
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs';
+
+    const inputEl = document.getElementById('pdfInput');
+    const processBtn = document.getElementById('processBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const statusEl = document.getElementById('status');
+    const resultListEl = document.getElementById('resultList');
+    const totalEl = document.getElementById('total');
+
+    const brl = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+
+    function formatBRL(value) {
+      return brl.format(value).replace(/\s/g, '');
+    }
+
+    function parseBRL(value) {
+      const cleaned = String(value).replace(/\./g, '').replace(',', '.');
+      const parsed = parseFloat(cleaned);
+      return Number.isFinite(parsed) ? parsed : NaN;
+    }
+
+    async function extractPdfText(file) {
+      const arrayBuffer = await file.arrayBuffer();
+      const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const chunks = [];
+
+      for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+        const page = await pdf.getPage(pageNumber);
+        const content = await page.getTextContent();
+        const pageText = content.items
+          .map(item => (item && item.str ? item.str : ''))
+          .join(' ');
+        chunks.push(pageText);
+      }
+
+      return chunks.join('\n');
+    }
+
+    function extractServiceValue(text) {
+      const regex = /valor\s+do\s+servi[cç]o[\s\S]{0,120}?r\$\s*([\d\.]+,\d{2})/i;
+      const match = text.match(regex);
+      if (!match || !match[1]) return null;
+
+      const value = parseBRL(match[1]);
+      if (!Number.isFinite(value)) return null;
+
+      return {
+        raw: match[1],
+        value
+      };
+    }
+
+    function resetResults() {
+      resultListEl.innerHTML = '';
+      totalEl.textContent = '';
+      statusEl.textContent = 'Aguardando arquivos.';
+    }
+
+    async function processFiles() {
+      const files = Array.from(inputEl.files || []);
+      resetResults();
+
+      if (!files.length) {
+        statusEl.textContent = 'Selecione pelo menos um arquivo PDF.';
+        return;
+      }
+
+      statusEl.textContent = `Processando ${files.length} arquivo(s)...`;
+
+      let total = 0;
+      let foundCount = 0;
+
+      for (const file of files) {
+        const listItem = document.createElement('li');
+
+        if (!file.name.toLowerCase().endsWith('.pdf')) {
+          listItem.textContent = `${file.name}: ignorado (não é PDF).`;
+          resultListEl.appendChild(listItem);
+          continue;
+        }
+
+        try {
+          const text = await extractPdfText(file);
+          const extracted = extractServiceValue(text);
+
+          if (!extracted) {
+            listItem.textContent = `${file.name}: "Valor do Serviço" não encontrado.`;
+          } else {
+            total += extracted.value;
+            foundCount += 1;
+            listItem.textContent = `${file.name}: ${formatBRL(extracted.value)} (extraído de R$ ${extracted.raw}).`;
+          }
+        } catch (error) {
+          listItem.textContent = `${file.name}: erro ao processar o PDF.`;
+          console.error('Erro ao processar arquivo PDF:', file.name, error);
+        }
+
+        resultListEl.appendChild(listItem);
+      }
+
+      totalEl.textContent = `Total encontrado: ${formatBRL(total)}`;
+      statusEl.textContent =
+        `Concluído. ${foundCount} de ${files.length} arquivo(s) com "Valor do Serviço" localizado.`;
+    }
+
+    processBtn.addEventListener('click', processFiles);
+    clearBtn.addEventListener('click', () => {
+      inputEl.value = '';
+      resetResults();
+    });
+  </script>
+</body>
+
+</html>
